@@ -1,4 +1,9 @@
-(function() {
+;(function() {
   "use strict";
-  console.log('Page Loaded');
+
+  var client = new Faye.Client('http://localhost:8000/ws');
+
+  client.subscribe('/bar', function(response){
+    console.log('from server', response);
+  });
 }());
