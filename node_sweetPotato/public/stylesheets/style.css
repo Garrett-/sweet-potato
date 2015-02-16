@@ -32,3 +32,21 @@ html, body {
   text-shadow: 0px -1px 1px white;
   color: #333;
 }
+
+.container .background .form {
+  position: absolute;
+  top: 200px;
+  left: 500px;
+}
+
+.container .background .form textarea {
+  display: block;
+  resize: none;
+  height: 100px;
+  width: 300px;
+}
+
+.container .background .form button {
+  padding: 5px 20px;
+  margin-top: 10px;
+}
