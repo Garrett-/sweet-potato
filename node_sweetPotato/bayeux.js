@@ -2,8 +2,7 @@ var http = require('http'),
     faye = require('faye');
 
 var server = http.createServer(),
-    bayeux = new faye.NodeAdapter({mount: '/ws', timeout: 45}),
-    clients = [];
+    bayeux = new faye.NodeAdapter({mount: '/ws', timeout: 45});
 
 // Handle non-Bayeux requests
 var server = http.createServer(function(request, response) {
@@ -18,18 +17,5 @@ console.log('Listening on port :8000');
 server.listen(8000);
 
 console.log(':8000/ws');
-
-bayeux.on('handshake', function(clientId){
-  clients.push(clientId);
-});
-
-bayeux.on('disconnect', function(clientId){
-  var i = clients.indexOf(clientId);
-
-  clients = clients.filter(function(c){
-    return c !== i;
-  });
-
-});
 
 module.exports = bayeux;

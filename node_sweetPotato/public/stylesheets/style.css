@@ -46,7 +46,8 @@ html, body {
   width: 300px;
 }
 
-.container .background .form button {
+.container .background .form button,
+.container .background .form input {
   padding: 5px 20px;
   margin-top: 10px;
 }

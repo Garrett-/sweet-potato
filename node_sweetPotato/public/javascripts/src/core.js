@@ -3,31 +3,52 @@
 
   var client = new Faye.Client('http://localhost:8000/ws');
 
-  $(init);
+  client.subscribe('/chatroom/messages', function(response){
+    var $TA = $('.messages'), $input = $('.input');
+    var messages = response.messages.join("\n");
 
-  client.subscribe('/chatroom', function(response){
-    console.log('from server', response);
+    $TA.val('');
+    $input.val('');
+    $TA.val(messages);
+
+    console.log('from /chatroom/messages', response);
+  }).then(function(){
+    console.log('Successfully subscribed to /chatroom/messages');
+  }, function(){
+    console.error('Failed to subscribe to /chatroom/messages');
   });
 
-  function init() {
-    var TA = $('#chat');
+  $(function(){
 
-    $('#form').on('submit', function(e){
-      e.preventDefault()
-      var msgObject = {
-        message: TA.val()
-      };
+    $.ajax({
+      url: '/message',
+      type: 'GET'
+    }).then(function(messages){
+      console.log('Got messages', messages);
+      $('.messages').val(messages.join("\n"));
+    }, function(){
+      console.error('Attempting to get messages failed');
+    });
 
-      console.log('sending to server', msgObject);
+    $('form#form').on('submit', function(event){
+      event.preventDefault();
 
-      client.publish('/chatroom', msgObject);
+      var formData = $('form').serializeArray();
 
-      TA.val('');
+      $.ajax({
+        url: '/message',
+        type: 'POST',
+        data: formData
+      }).then(function(response){
+        console.log('message sent');
+      }, function(){
+        console.error('message failed');
+      });
 
       return false;
     });
 
-  }
+  });
 
 
 }());
